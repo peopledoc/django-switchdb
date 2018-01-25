@@ -1,11 +1,10 @@
 
-import threading
 from importlib import import_module
 
 from django.conf import settings
 
 
-database_cfg = threading.local()
+from .database_router import database_cfg
 
 
 class SwitchDatabaseMiddleware(object):
@@ -25,18 +24,3 @@ class SwitchDatabaseMiddleware(object):
         del database_cfg.name_database
 
         return response
-
-
-class DatabaseRouter(object):
-    def _get_database_name_in_local_thread_data(self):
-
-        if hasattr(database_cfg, 'name_database'):
-            return database_cfg.name_database
-        else:
-            return 'default'
-
-    def db_for_read(self, model, **hints):
-        return self._get_database_name_in_local_thread_data()
-
-    def db_for_write(self, model, **hints):
-        return self._get_database_name_in_local_thread_data()

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'demo_app',
     'demo_api',
     'django_switchdb',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -86,11 +87,13 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ["django_switchdb.middleware.DatabaseRouter"]
+DATABASE_ROUTERS = ["django_switchdb.database_router.SwitchDBRouter"]
 
 DATABASE_CONFIGURATOR = {'test1.example.com:8000': 'default',
                          'test2.example.com:8000': 'other_database',
                          }
+
+DATABASES_LIST = ['default', 'other_database']
 
 DATABASE_SELECTOR = 'django_switchdb.db_selector.get_database_depending_on_request'
 
