@@ -11,14 +11,14 @@ from .database_router import database_cfg
 class SwitchDatabaseMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
-        module_path, _, function_name = settings.DATABASE_SELECTOR.rpartition('.')
+        module_path, _, function_name = settings.DATABASE_ALIAS_SELECTOR.rpartition('.')
         try:
             function_for_select_database = getattr(import_module(module_path), function_name)
-            database_cfg.name_database = function_for_select_database(request)
+            database_cfg.alias_database = function_for_select_database(request)
         except AttributeError:
-            raise ImportError(settings.DATABASE_SELECTOR)
+            raise ImportError(settings.DATABASE_ALIAS_SELECTOR)
 
     def process_response(self, request, response):
-        if hasattr(database_cfg, 'name_database'):
-            del database_cfg.name_database
+        if hasattr(database_cfg, 'alias_database'):
+            del database_cfg.alias_database
         return response

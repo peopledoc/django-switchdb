@@ -24,8 +24,8 @@ class ItemDatabaseOneForTestView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemDatabaseOneForTestView, self).get_context_data(**kwargs)
-        name_database = get_database_depending_queryset_result(ItemForTest.objects.filter(name='Item1'))
-        context['name_database'] = name_database
+        alias_database = get_database_depending_queryset_result(ItemForTest.objects.filter(name='Item1'))
+        context['alias_database'] = alias_database
         context['number_items'] = ItemForTest.objects.all().count()
         return context
 
@@ -35,7 +35,7 @@ class ItemDatabaseTwoForTestView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemDatabaseTwoForTestView, self).get_context_data(**kwargs)
-        name_database = get_database_depending_queryset_result(ItemForTest.objects.filter(name='DB2_Item1'))
-        context['name_database'] = name_database
+        alias_database = get_database_depending_queryset_result(ItemForTest.objects.filter(name='DB2_Item1'))
+        context['alias_database'] = alias_database
         context['number_items'] = ItemForTest.objects.all().count()
         return context

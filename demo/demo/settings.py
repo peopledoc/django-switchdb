@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'demo_app',
     'demo_api',
-    'django_switchdb',
-    'django_extensions'
+    'django_switchdb'
 ]
 
 MIDDLEWARE = [
@@ -89,13 +88,13 @@ DATABASES = {
 
 DATABASE_ROUTERS = ["django_switchdb.database_router.SwitchDBRouter"]
 
-DATABASE_CONFIGURATOR = {'test1.example.com:8000': 'default',
-                         'test2.example.com:8000': 'other_database',
-                         }
+DATABASE_ALIAS_CONFIGURATOR = {'test1.example.com:8000': 'default',
+                               'test2.example.com:8000': 'other_database',
+                               }
 
-DATABASES_LIST = ['default', 'other_database']
+DATABASES_ALIAS_LIST = ['default', 'other_database']
 
-DATABASE_SELECTOR = 'django_switchdb.db_selector.get_database_depending_on_request'
+DATABASE_ALIAS_SELECTOR = 'django_switchdb.db_selector.get_database_depending_on_request'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

@@ -8,22 +8,8 @@ from .models import ItemForTest
 
 from django_switchdb.db_selector import get_database_depending_queryset_result
 
+
 class SwitchDatabaseMiddlewareTestCase(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super(SwitchDatabaseMiddlewareTestCase, cls).setUpClass()
-        ItemForTest.objects.using('default').create(name='Item1')
-        ItemForTest.objects.using('default').create(name='Item2')
-
-        ItemForTest.objects.using('other_database').create(name='DB2_Item1')
-        ItemForTest.objects.using('other_database').create(name='DB2_Item2')
-        ItemForTest.objects.using('other_database').create(name='DB2_Item3')
-
-    @classmethod
-    def tearDownClass(cls):
-        super(SwitchDatabaseMiddlewareTestCase, cls).setUpClass()
-        ItemForTest.objects.using('default').delete()
-        ItemForTest.objects.using('other_database').delete()
 
     def test_number_item_in_each_database(self):
         self.assertEqual(2, ItemForTest.objects.using('default').all().count())
@@ -46,21 +32,6 @@ class SwitchDatabaseMiddlewareTestCase(TestCase):
 
 
 class SwitchDependOnQuerysetTestCase(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super(SwitchDependOnQuerysetTestCase, cls).setUpClass()
-        ItemForTest.objects.using('default').create(name='Item1')
-        ItemForTest.objects.using('default').create(name='Item2')
-
-        ItemForTest.objects.using('other_database').create(name='DB2_Item1')
-        ItemForTest.objects.using('other_database').create(name='DB2_Item2')
-        ItemForTest.objects.using('other_database').create(name='DB2_Item3')
-
-    @classmethod
-    def tearDownClass(cls):
-        super(SwitchDependOnQuerysetTestCase, cls).setUpClass()
-        ItemForTest.objects.using('default').delete()
-        ItemForTest.objects.using('other_database').delete()
 
     def test_switch_db_first_database(self):
         query = ItemForTest.objects.filter(name="Item1")
@@ -69,4 +40,3 @@ class SwitchDependOnQuerysetTestCase(TestCase):
     def test_switch_db_second_database(self):
         query = ItemForTest.objects.filter(name="DB2_Item1")
         self.assertEqual('other_database', get_database_depending_queryset_result(query))
-

@@ -11,22 +11,6 @@ from demo_app.models import ItemForTest
 
 class SwitchDatabaseMiddlewareInAPITestCase(APITestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        super(SwitchDatabaseMiddlewareInAPITestCase, cls).setUpClass()
-        ItemForTest.objects.using('default').create(name='Item1')
-        ItemForTest.objects.using('default').create(name='Item2')
-
-        ItemForTest.objects.using('other_database').create(name='DB2_Item1')
-        ItemForTest.objects.using('other_database').create(name='DB2_Item2')
-        ItemForTest.objects.using('other_database').create(name='DB2_Item3')
-
-    @classmethod
-    def tearDownClass(cls):
-        super(SwitchDatabaseMiddlewareInAPITestCase, cls).setUpClass()
-        ItemForTest.objects.using('default').delete()
-        ItemForTest.objects.using('other_database').delete()
-
     def test_number_item_in_each_database(self):
         self.assertEqual(2, ItemForTest.objects.using('default').all().count())
         self.assertEqual(3, ItemForTest.objects.using('other_database').all().count())
